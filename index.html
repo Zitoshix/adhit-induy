@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adhit & Induy — LDR Love Vault (05.11.2025)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        babypink: {
+                            50: '#FFF7F9',
+                            100: '#FCEEF2',
+                            200: '#FADADD',
+                            300: '#F4C2C8',
+                            400: '#E899A8',
+                            500: '#D96B8A',
+                            600: '#C85274',
+                        },
+                        rosewood: {
+                            DEFAULT: '#3A262A',
+                            light: '#5A3E44',
+                            muted: '#7A5C61',
+                        },
+                        champagne: {
+                            DEFAULT: '#D4AF37',
+                            light: '#F3E5AB',
+                            muted: '#C5A059',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at 15% 20%, #FFF7F9 0%, #FCEEF2 45%, #FADADD 100%);
+            color: #3A262A;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 50px rgba(58, 38, 42, 0.06);
+        }
+
+        /* Floating Petals */
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.35;
+            animation: floatPetal linear infinite;
+        }
+
+        @keyframes floatPetal {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+            15% { opacity: 0.45; }
+            85% { opacity: 0.45; }
+            100% { transform: translateY(-105vh) rotate(360deg) translateX(35px); opacity: 0; }
+        }
+
+        .ldr-wave-line {
+            stroke-dasharray: 6 6;
+            animation: dashMove 15s linear infinite;
+        }
+
+        @keyframes dashMove {
+            to { stroke-dashoffset: -200; }
+        }
+
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-spinning {
+            animation: spinVinyl 6s linear infinite;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-babypink-300 selection:text-rosewood">
+
+    <!-- Floating Ambient Petals Container -->
+    <div id="petals-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-2.5 pointer-events-none"></div>
+
+    <!-- ==========================================
+         1. INTERACTIVE WELCOME GATE ("BUKA RUANG KITA")
+         ========================================== -->
+    <div id="intro-gate" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gradient-to-br from-[#FFF7F9] via-[#FCEEF2] to-[#FADADD] transition-opacity duration-700">
+        <div class="max-w-lg w-full glass-panel rounded-[2.2rem] p-8 sm:p-10 text-center relative overflow-hidden border-2 border-white shadow-2xl">
+            <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-babypink-200/80 border border-white flex items-center justify-center text-3xl shadow-md">
+                💌
+            </div>
+            <span class="inline-block px-3.5 py-1 rounded-full bg-babypink-100 border border-babypink-300 text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold mb-3">
+                PRIVATE LDR MEMORY VAULT • 05.11.2025
+            </span>
+            <h1 class="font-serif text-3xl sm:text-5xl font-bold text-rosewood leading-tight">
+                Adhit &amp; Induy
+            </h1>
+            <p class="text-xs sm:text-sm text-rosewood/75 mt-3 leading-relaxed">
+                Selamat datang di ruang digital kita berdua. Walau terpisah jarak kota, setiap foto, suara, klaim voucher, dan rindu kita tersimpan hangat di sini.
+            </p>
+
+            <!-- Choose Identity on Entry -->
+            <div class="mt-6 p-3.5 rounded-2xl bg-white/80 border border-babypink-200">
+                <p class="text-[11px] font-mono uppercase tracking-wider text-rosewood/65 mb-2.5">Siapa yang sedang membuka ruang ini?</p>
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button type="button" onclick="switchIdentity('Adhit')" id="gate-btn-adhit" class="py-2.5 px-4 rounded-xl bg-babypink-500 text-white text-xs font-bold shadow transition">
+                        👦🏻 Saya Adhit
+                    </button>
+                    <button type="button" onclick="switchIdentity('Induy')" id="gate-btn-induy" class="py-2.5 px-4 rounded-xl bg-white text-rosewood border border-babypink-200 text-xs font-semibold hover:bg-babypink-50 transition">
+                        👧🏻 Saya Induy
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" id="enter-vault-btn" onclick="bootVaultAppWithAudio()" class="mt-6 w-full py-4 px-6 rounded-full bg-gradient-to-r from-rosewood via-rosewood-light to-babypink-600 hover:from-babypink-600 hover:to-rosewood text-white font-semibold text-xs sm:text-sm uppercase tracking-widest shadow-xl hover:shadow-babypink-400/50 transition transform active:scale-95 flex items-center justify-center gap-2">
+                <span>✨ Buka Ruang Kita &amp; Putar Musik</span>
+            </button>
+            <p class="text-[10px] font-mono text-rosewood/55 mt-3">
+                PIN Khusus Pasangan: <strong class="text-babypink-600">0511</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         2. STICKY TOP NAVIGATION BAR
+         ========================================== -->
+    <header class="sticky top-0 z-50 px-3 sm:px-8 pt-3">
+        <div class="max-w-7xl mx-auto glass-panel rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-2">
+            <!-- Brand Identity -->
+            <a href="#hero-identity" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-babypink-500 to-babypink-300 text-white font-serif font-bold text-sm flex items-center justify-center shadow-sm">
+                    A&amp;I
+                </div>
+                <div class="hidden sm:block">
+                    <span class="font-serif font-bold text-base text-rosewood block leading-none">Adhit &amp; Induy</span>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-babypink-600">Since 05.11.2025</span>
+                </div>
+            </a>
+
+            <!-- Desktop Widescreen Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-5 text-[11px] font-semibold uppercase tracking-wider text-rosewood/75">
+                <a href="#hero-identity" class="hover:text-babypink-500 transition">Beranda</a>
+                <a href="#ldr-hub-box" class="hover:text-babypink-500 transition flex items-center gap-1 text-babypink-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-babypink-500 animate-ping"></span>
+                    <span>LDR Hub</span>
+                </a>
+                <a href="#hero-slideshow" class="hover:text-babypink-500 transition">Slideshow</a>
+                <a href="#photobox-section" class="hover:text-babypink-500 transition">Photobox</a>
+                <a href="#timeline-section" class="hover:text-babypink-500 transition">Kisah</a>
+                <a href="#capsule-section" class="hover:text-babypink-500 transition">Voucher LDR</a>
+                <a href="#bucket-section" class="hover:text-babypink-500 transition">Bucket List</a>
+            </nav>
+
+            <!-- Right Actions: Identity Switcher + WA Config + PIN Lock Status -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Active Identity Switcher -->
+                <div class="flex items-center bg-babypink-100/80 p-1 rounded-full border border-babypink-200">
+                    <button type="button" id="identity-btn-adhit" onclick="switchIdentity('Adhit')" class="px-2.5 py-1 rounded-full bg-babypink-500 text-white text-[10px] font-bold shadow transition">
+                        👦🏻 Adhit
+                    </button>
+                    <button type="button" id="identity-btn-induy" onclick="switchIdentity('Induy')" class="px-2.5 py-1 rounded-full text-rosewood text-[10px] font-medium transition">
+                        👧🏻 Induy
+                    </button>
+                </div>
+
+                <!-- Discord Webhook Configuration Button -->
+                <button type="button" onclick="openWaConfigModal()" class="px-3 py-1.5 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-[10px] font-bold shadow-sm transition flex items-center gap-1">
+                    <span>👾</span>
+                    <span class="hidden md:inline">Set Discord</span>
+                </button>
+
+                <!-- PIN Status Button -->
+                <button type="button" id="top-pin-btn" onclick="openPinModal()" class="px-3 py-1.5 rounded-full bg-white hover:bg-babypink-50 text-rosewood border border-babypink-300 text-[10px] font-mono font-semibold transition">
+                    🔒 PIN: 0511
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         3. HERO 1: IDENTITY & REAL-TIME LOVE COUNTER
+         ========================================== -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-8 pb-24 space-y-16">
+
+        <section id="hero-identity" class="glass-panel rounded-[2.5rem] p-6 sm:p-12 relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Editorial Typography -->
+                <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-babypink-100 border border-babypink-300">
+                        <span class="w-2 h-2 rounded-full bg-babypink-500 animate-pulse"></span>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-rosewood font-semibold">OUR ETERNAL ARCHIVE • 05 NOVEMBER 2025</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-6xl font-bold text-rosewood leading-[1.12]">
+                        Adhitya Pratama <br>
+                        <span class="italic font-normal text-babypink-500">&amp;</span> Anindya Zalva Salsabila
+                    </h1>
+
+                    <p class="text-xs sm:text-sm text-rosewood/75 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        "Jarak hanyalah jeda geografis yang mengajarkan kita betapa berharganya setiap detik pertemuan, setiap dering telepon malam, dan setiap foto yang kita bagi bersama."
+                    </p>
+
+                    <!-- Live Relationship Counter Box -->
+                    <div class="p-4 sm:p-5 rounded-3xl bg-white/85 border border-babypink-200 shadow-sm inline-block w-full sm:w-auto">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold block mb-1">
+                            ⏳ WAKTU KEBERSAMAAN KITA SEJAK 05.11.2025
+                        </span>
+                        <p id="relation-counter-display" class="font-serif text-xl sm:text-3xl font-bold text-rosewood">
+                            Menghitung hari bahagia...
+                        </p>
+                    </div>
+
+                    <!-- Quick Jump Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                        <a href="#photobox-section" class="px-6 py-3.5 rounded-full bg-rosewood hover:bg-babypink-600 text-white text-xs font-semibold uppercase tracking-wider shadow-lg transition">
+                            📸 Buka Photobox &amp; Upload PAP
+                        </a>
+                        <a href="#capsule-section" class="px-6 py-3.5 rounded-full bg-white hover:bg-babypink-100 text-rosewood border border-babypink-300 text-xs font-semibold uppercase tracking-wider shadow-sm transition">
+                            🎟️ Klaim Voucher LDR ke Discord
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Editorial Dual Portrait Card -->
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-sm p-4 rounded-[2rem] bg-white border-2 border-babypink-200 shadow-xl">
+                        <div class="aspect-[4/5] rounded-2xl overflow-hidden relative bg-babypink-100">
+                            <img id="hero-featured-img" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&auto=format&fit=crop&q=80" alt="Adhit & Induy" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-rosewood/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                <span class="text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-babypink-500/90">Adhit 💗 Induy</span>
+                                <p class="font-serif text-lg font-bold mt-1">Walau Jauh Tetap Satu Frekuensi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             4. LDR LIVE CONNECTION HUB & SOS RINDU BAR
+             ========================================== -->
+        <section id="ldr-hub-box" class="glass-panel rounded-[2.5rem] p-6 sm:p-10 border-2 border-white">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-babypink-200/80">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🌐 LIVE LDR CONNECTION BRIDGE</span>
+                    <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Stasiun Rindu Adhit &amp; Induy</h2>
+                </div>
+                <button type="button" onclick="openStatusUpdateModal()" class="self-start md:self-auto px-4 py-2.5 rounded-full bg-babypink-100 hover:bg-babypink-200 text-rosewood text-xs font-semibold border border-babypink-300 transition">
+                    ✏️ Update Status &amp; Kirim ke Discord
+                </button>
+            </div>
+
+            <!-- Two Stations & Animated Bridge -->
+            <div class="grid grid-cols-1 lg:grid-cols-11 gap-6 items-center mt-6">
+                <!-- Stasiun Adhit -->
+                <div class="lg:col-span-4 p-5 rounded-2xl bg-white/85 border border-babypink-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">👦🏻 STASIUN ADHIT</span>
+                        <span id="adhit-city-badge" class="text-[11px] font-mono text-rosewood/70 bg-babypink-50 px-2.5 py-0.5 rounded-full border border-babypink-200">📍 Makassar (WITA)</span>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-rosewood">Adhitya Pratama</h3>
+                    <div class="mt-3 p-2.5 rounded-xl bg-babypink-50/80 border border-babypink-200/70 flex items-center gap-2">
+                        <span class="text-sm">💬</span>
+                        <p id="adhit-status-text" class="text-xs font-medium text-rosewood leading-snug">Lagi kangen Induy, siap sleep call malam ini 🌙</p>
+                    </div>
+                </div>
+
+                <!-- Center Animated Connection Bridge -->
+                <div class="lg:col-span-3 flex flex-col items-center justify-center text-center py-2">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-champagne-muted font-bold mb-1">Makassar ⇄ Depok • Beda 1 Jam, Satu Hati</span>
+                    <svg class="w-full h-12 text-babypink-400" viewBox="0 0 220 48" fill="none">
+                        <path d="M10 24 Q 60 4, 110 24 T 210 24" stroke="currentColor" stroke-width="2" class="ldr-wave-line" />
+                        <circle cx="10" cy="24" r="4" fill="#D96B8A" />
+                        <circle cx="210" cy="24" r="4" fill="#D4AF37" />
+                        <path d="M110 17 C 107 13, 101 14, 101 19 C 101 24, 110 28, 110 31 C 110 28, 119 24, 119 19 C 119 14, 113 13, 110 17 Z" fill="#C85274"/>
+                    </svg>
+                    <div class="mt-1 px-3.5 py-1 rounded-full bg-rosewood text-champagne-light text-[11px] font-mono font-semibold shadow-sm">
+                        <span id="meetup-countdown-pill">✈️ Menghitung hari ketemu...</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-1.5 mt-1.5">
+                        <span class="text-[10px] text-rosewood/70">Target Ketemu: <strong id="meetup-date-label" class="text-rosewood underline decoration-babypink-400">15 November 2026</strong></span>
+                        <button type="button" onclick="openStatusUpdateModal()" class="px-2 py-0.5 rounded-full bg-babypink-100 hover:bg-babypink-200 text-babypink-600 text-[9px] font-bold border border-babypink-300 transition" title="Ubah Tanggal Target Ketemu">
+                            ✏️ Ubah Tanggal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stasiun Induy -->
+                <div class="lg:col-span-4 p-5 rounded-2xl bg-white/85 border border-babypink-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-500 font-bold">👧🏻 STASIUN INDUY</span>
+                        <span id="induy-city-badge" class="text-[11px] font-mono text-rosewood/70 bg-babypink-50 px-2.5 py-0.5 rounded-full border border-babypink-200">📍 Depok (WIB)</span>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-rosewood">Anindya Zalva Salsabila</h3>
+                    <div class="mt-3 p-2.5 rounded-xl bg-babypink-50/80 border border-babypink-200/70 flex items-center gap-2">
+                        <span class="text-sm">💬</span>
+                        <p id="induy-status-text" class="text-xs font-medium text-rosewood leading-snug">Semangat hari ini! Nanti malam cerita banyak yaa 💗</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOS Rindu Quick-Bar (Direct to Discord Webhook) -->
+            <div class="mt-6 pt-5 border-t border-babypink-200/80">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-rosewood/60 block mb-2.5">⚡ SOS RINDU QUICK-BAR (KLIK OTOMATIS MASUK KE GRUP DISCORD):</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <button type="button" onclick="triggerSosWa('sleepcall')" class="p-3 rounded-2xl bg-white hover:bg-babypink-50 border border-babypink-200 text-left transition shadow-sm flex items-center gap-2.5">
+                        <span class="text-xl">🌙</span>
+                        <div>
+                            <p class="text-xs font-bold text-rosewood">Ajak Sleep Call</p>
+                            <p class="text-[10px] text-rosewood/60">Ping Voice Discord</p>
+                        </div>
+                    </button>
+                    <button type="button" onclick="triggerSosWa('pap')" class="p-3 rounded-2xl bg-white hover:bg-babypink-50 border border-babypink-200 text-left transition shadow-sm flex items-center gap-2.5">
+                        <span class="text-xl">📸</span>
+                        <div>
+                            <p class="text-xs font-bold text-rosewood">Tagih PAP Sekarang</p>
+                            <p class="text-[10px] text-rosewood/60">Tagih di grup Discord</p>
+                        </div>
+                    </button>
+                    <button type="button" onclick="triggerSosWa('makan')" class="p-3 rounded-2xl bg-white hover:bg-babypink-50 border border-babypink-200 text-left transition shadow-sm flex items-center gap-2.5">
+                        <span class="text-xl">🍱</span>
+                        <div>
+                            <p class="text-xs font-bold text-rosewood">Ingatkan Makan</p>
+                            <p class="text-[10px] text-rosewood/60">Kirim alert perhatian</p>
+                        </div>
+                    </button>
+                    <button type="button" onclick="triggerSosWa('bujuk')" class="p-3 rounded-2xl bg-white hover:bg-babypink-50 border border-babypink-200 text-left transition shadow-sm flex items-center gap-2.5">
+                        <span class="text-xl">🏳️</span>
+                        <div>
+                            <p class="text-xs font-bold text-rosewood">Bendera Putih</p>
+                            <p class="text-[10px] text-rosewood/60">Bujukan ke Discord</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Action Bar: Virtual Hug Counter & Sender -->
+            <div class="mt-6 pt-5 border-t border-babypink-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                    <div class="w-11 h-11 rounded-2xl bg-babypink-100 border border-babypink-300 flex items-center justify-center text-xl shadow-sm">
+                        🫂
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-rosewood">Penghitung Peluk &amp; Rindu Virtual Kita</p>
+                        <p id="last-hug-log" class="text-[11px] text-rosewood/65">Kirim pelukan virtual kapan pun kamu lagi kangen pasanganmu!</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-2.5">
+                    <div class="px-4 py-2 rounded-2xl bg-white border border-babypink-200 text-center">
+                        <span id="hug-count-number" class="font-serif text-2xl font-bold text-rosewood block leading-none">28</span>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-rosewood/60">Total Peluk</span>
+                    </div>
+
+                    <button type="button" id="send-virtual-hug-btn" class="px-5 py-3.5 rounded-full bg-gradient-to-r from-babypink-500 to-babypink-400 hover:from-rosewood hover:to-rosewood-light text-white text-xs font-semibold uppercase tracking-wider shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                        <span>🫂 Peluk Virtual</span>
+                    </button>
+
+                    <button type="button" id="send-wa-hug-btn" class="px-5 py-3.5 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-semibold uppercase tracking-wider shadow-lg transition transform active:scale-95 flex items-center gap-1.5">
+                        <span>👾 Kirim Peluk ke Discord</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. HERO 2: DEDICATED WIDESCREEN PHOTO SLIDESHOW
+             ========================================== -->
+        <section id="hero-slideshow" class="glass-panel rounded-[2.5rem] p-6 sm:p-10 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🎞️ WIDESCREEN EDITORIAL EXHIBITION</span>
+                    <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Galeri Slideshow Otomatis</h2>
+                    <p class="text-xs text-rosewood/70 mt-1">Setiap foto yang kalian unggah otomatis tampil bergantian dengan latar ambient blur sinematik yang nyaman di layar PC &amp; Laptop.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="toggleSlideFitMode()" id="fit-mode-btn" class="px-3.5 py-2 rounded-xl bg-white border border-babypink-300 text-xs font-semibold text-rosewood hover:bg-babypink-50 transition">
+                        📐 Mode: Utuh (Contain)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Widescreen 16:9 Stage -->
+            <div id="slideshow-container" class="relative w-full h-[380px] sm:h-[520px] rounded-3xl overflow-hidden bg-rosewood/10 border-2 border-white shadow-xl select-none">
+                <!-- Populated dynamically by renderSlideshow() -->
+            </div>
+
+            <!-- Thumbnail Strip -->
+            <div id="slideshow-thumbs" class="flex items-center gap-3 overflow-x-auto py-2 px-1">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             6. AUTO-PHOTOBOX STUDIO & MANUAL PHOTO UPLOADER
+             ========================================== -->
+        <section id="photobox-section" class="glass-panel rounded-[2.5rem] p-6 sm:p-10">
+            <div class="max-w-3xl mb-8">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">📸 KOREAN PHOTOBOX STUDIO &amp; CLOUD UPLOADER</span>
+                <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Upload Foto &amp; Cetak Strip Photobox</h2>
+                <p class="text-xs sm:text-sm text-rosewood/75 mt-1">
+                    Unggah foto langsung dari perangkatmu atau tempel link foto. Foto otomatis masuk ke Slideshow di atas dan membentuk strip Photobox 3-Cut dengan ornamen estetik!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left Column: Upload Form + Photo Picker + Customizer -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Upload Form (Supports File Upload & URL) -->
+                    <form id="photo-upload-form" class="p-5 sm:p-6 rounded-3xl bg-white/90 border border-babypink-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-serif text-lg font-bold text-rosewood">1. Tambah Foto / PAP Baru</h3>
+                            <span class="text-[10px] font-mono text-babypink-600 font-semibold">Otomatis Masuk Slideshow</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-rosewood mb-1">Pilih File Foto dari HP/Laptop:</label>
+                                <input type="file" id="new-photo-file" accept="image/*" class="w-full text-xs file:mr-3 file:py-2 file:px-3.5 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-babypink-100 file:text-rosewood hover:file:bg-babypink-200">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-rosewood mb-1">Atau Tempel URL Gambar:</label>
+                                <input type="url" id="new-photo-url" placeholder="https://..." class="w-full px-3.5 py-2 rounded-xl bg-babypink-50/70 border border-babypink-200 text-xs focus:outline-none focus:border-babypink-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block text-[11px] font-semibold text-rosewood mb-1">Caption / Cerita Singkat:</label>
+                                <input type="text" id="new-photo-caption" required placeholder="Contoh: PAP abis kuliah kangen Adhit..." class="w-full px-3.5 py-2 rounded-xl bg-babypink-50/70 border border-babypink-200 text-xs focus:outline-none focus:border-babypink-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-rosewood mb-1">Label POV LDR:</label>
+                                <select id="new-photo-pov" class="w-full px-3 py-2 rounded-xl bg-babypink-50/70 border border-babypink-200 text-xs font-medium text-rosewood focus:outline-none">
+                                    <option value="💑 Momen Bersama">💑 Momen Bersama</option>
+                                    <option value="👦🏻 POV Adhit">👦🏻 POV Adhit</option>
+                                    <option value="👧🏻 POV Induy">👧🏻 POV Induy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 px-5 rounded-full bg-rosewood hover:bg-babypink-600 text-white text-xs font-semibold uppercase tracking-wider shadow-md transition">
+                            ✨ Unggah ke Website &amp; Otomatis Kirim ke Discord
+                        </button>
+                    </form>
+
+                    <!-- Choose 3 Photos for Strip -->
+                    <div class="p-5 sm:p-6 rounded-3xl bg-white/90 border border-babypink-200 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-serif text-lg font-bold text-rosewood">2. Pilih 3 Foto untuk Strip Photobox</h3>
+                            <span class="text-[10px] font-mono text-rosewood/60">Klik foto untuk memilih</span>
+                        </div>
+                        <div id="photobox-selection-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 max-h-60 overflow-y-auto p-1">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Photobox Theme & Filter Customizer -->
+                    <div class="p-5 sm:p-6 rounded-3xl bg-white/90 border border-babypink-200 shadow-sm space-y-4">
+                        <h3 class="font-serif text-lg font-bold text-rosewood">3. Kustomisasi Kertas Strip &amp; Ornamen</h3>
+
+                        <!-- Theme Picker -->
+                        <div>
+                            <label class="block text-[11px] font-semibold text-rosewood mb-1.5">Warna Kertas Strip:</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button type="button" onclick="setPhotoboxTheme('pink')" class="py-2 px-3 rounded-xl bg-[#FFF5F8] border-2 border-babypink-400 text-xs font-semibold text-rosewood">🌸 Baby Pink</button>
+                                <button type="button" onclick="setPhotoboxTheme('cream')" class="py-2 px-3 rounded-xl bg-[#FDFBF7] border border-babypink-200 text-xs font-semibold text-rosewood">📜 Cream Vintage</button>
+                                <button type="button" onclick="setPhotoboxTheme('rosewood')" class="py-2 px-3 rounded-xl bg-[#3A262A] text-white text-xs font-semibold">🍷 Rosewood</button>
+                                <button type="button" onclick="setPhotoboxTheme('polkadot')" class="py-2 px-3 rounded-xl bg-babypink-100 border border-babypink-300 text-xs font-semibold text-rosewood">🎀 Pastel Glow</button>
+                            </div>
+                        </div>
+
+                        <!-- Filter Picker -->
+                        <div>
+                            <label class="block text-[11px] font-semibold text-rosewood mb-1.5">Filter Tone Kamera:</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button type="button" onclick="setPhotoboxFilter('normal')" class="py-2 px-3 rounded-xl bg-white border border-babypink-200 text-xs font-medium text-rosewood">Normal</button>
+                                <button type="button" onclick="setPhotoboxFilter('blush')" class="py-2 px-3 rounded-xl bg-white border border-babypink-200 text-xs font-medium text-rosewood">Soft Blush</button>
+                                <button type="button" onclick="setPhotoboxFilter('retro')" class="py-2 px-3 rounded-xl bg-white border border-babypink-200 text-xs font-medium text-rosewood">Warm Retro</button>
+                                <button type="button" onclick="setPhotoboxFilter('bw')" class="py-2 px-3 rounded-xl bg-white border border-babypink-200 text-xs font-medium text-rosewood">B&amp;W Classic</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Footer Input -->
+                        <div>
+                            <label class="block text-[11px] font-semibold text-rosewood mb-1">Tulisan Bawah Strip Photobox:</label>
+                            <input type="text" id="strip-footer-input" value="Walau Jauh Tetap Satu Frame" oninput="updatePhotoboxFooter(this.value)" class="w-full px-3.5 py-2 rounded-xl bg-babypink-50 border border-babypink-200 text-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Photobox Strip Preview & PNG Download -->
+                <div class="lg:col-span-5 flex flex-col items-center">
+                    <div id="photobox-strip-preview" class="w-full max-w-[270px] mx-auto">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <div class="mt-6 flex flex-col sm:flex-row gap-2.5 w-full max-w-xs">
+                        <button type="button" onclick="downloadPhotoboxPng()" class="flex-1 py-3.5 px-5 rounded-full bg-gradient-to-r from-babypink-500 to-babypink-600 hover:from-rosewood hover:to-rosewood-light text-white text-xs font-bold uppercase tracking-wider shadow-lg transition text-center">
+                            ⬇️ Unduh Strip (.PNG)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             7. TIMELINE STORY & AUDIO POLAROID
+             ========================================== -->
+        <section id="timeline-section" class="glass-panel rounded-[2.5rem] p-6 sm:p-10 space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">📖 OUR JOURNEY &amp; VOICE POLAROID</span>
+                    <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Jejak Cerita Adhit &amp; Induy</h2>
+                </div>
+                <button type="button" onclick="toggleAddTimelineForm()" class="self-start sm:self-auto px-4 py-2.5 rounded-full bg-rosewood text-white text-xs font-semibold hover:bg-babypink-600 transition">
+                    + Tambah Babak Cerita Baru
+                </button>
+            </div>
+
+            <!-- Collapsible New Story Form -->
+            <form id="timeline-add-form" class="hidden p-5 rounded-3xl bg-white border border-babypink-200 space-y-3">
+                <h3 class="font-serif text-lg font-bold text-rosewood">Tulis Babak Cerita Baru</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="text" id="tl-title-input" required placeholder="Judul Momen (Misal: First Meet di Bandara)" class="px-3.5 py-2 rounded-xl bg-babypink-50 border border-babypink-200 text-xs">
+                    <input type="text" id="tl-date-input" required placeholder="Tanggal (Misal: 25 Desember 2025)" class="px-3.5 py-2 rounded-xl bg-babypink-50 border border-babypink-200 text-xs">
+                </div>
+                <textarea id="tl-text-input" rows="3" required placeholder="Tuliskan detail cerita manis kalian di sini..." class="w-full px-3.5 py-2 rounded-xl bg-babypink-50 border border-babypink-200 text-xs"></textarea>
+                <button type="submit" class="px-6 py-2.5 rounded-full bg-babypink-500 hover:bg-rosewood text-white text-xs font-bold transition">Simpan Cerita &amp; Broadcast ke Discord</button>
+            </form>
+
+            <!-- Timeline Vertical List -->
+            <div id="timeline-container" class="space-y-6">
+                <!-- Populated by renderTimeline() -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             8. 1ST ANNIVERSARY CAPSULE & LDR LOVE VOUCHERS
+             ========================================== -->
+        <section id="capsule-section" class="glass-panel rounded-[2.5rem] p-6 sm:p-10 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🎟️ LDR DIGITAL COUPONS &amp; 1ST ANNIVERSARY CAPSULE</span>
+                    <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Voucher Cinta LDR &amp; Kapsul 1 Tahun</h2>
+                    <p class="text-xs text-rosewood/70 mt-1">Klaim voucher kapan saja saat kamu butuh perhatian ekstra! Tiket klaim akan otomatis terkirim ke WhatsApp pasanganmu.</p>
+                </div>
+                <div class="px-4 py-2 rounded-full bg-rosewood text-champagne-light text-xs font-mono font-semibold self-start md:self-auto">
+                    <span id="anniversary-countdown">Menghitung menuju 05 Nov 2026...</span>
+                </div>
+            </div>
+
+            <!-- Secret Anniversary Capsule Card -->
+            <div class="p-6 rounded-3xl bg-gradient-to-r from-babypink-100 via-white to-babypink-100 border-2 border-babypink-300 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="space-y-1 text-center sm:text-left">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🔐 SURAT KAPSUL WAKTU (05 NOVEMBER 2026)</span>
+                    <h3 class="font-serif text-xl sm:text-2xl font-bold text-rosewood">Pesan Rahasia 1 Tahun Adhit &amp; Induy</h3>
+                    <p id="capsule-secret-preview" class="text-xs text-rosewood/75 italic max-w-2xl">
+                        "Klik tombol buka surat di samping dan masukkan PIN 0511 untuk membaca atau mengedit pesan kapsul waktu kalian."
+                    </p>
+                </div>
+                <button type="button" onclick="unlockSecretCapsuleLetter()" class="px-5 py-3 rounded-full bg-rosewood hover:bg-babypink-600 text-white text-xs font-semibold uppercase tracking-wider shadow transition flex-shrink-0">
+                    🔓 Buka Surat Kapsul
+                </button>
+            </div>
+
+            <!-- LDR Vouchers Grid -->
+            <div id="vouchers-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated by renderVouchers() -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             9. COUPLE BUCKET LIST & ROSE-GOLD SCRATCH CARD
+             ========================================== -->
+        <section id="bucket-section" class="glass-panel rounded-[2.5rem] p-6 sm:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <!-- Left: Shared Bucket List -->
+                <div class="lg:col-span-7 space-y-5">
+                    <div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">✨ SHARED DREAMS &amp; CHECKLIST</span>
+                        <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Bucket List Adhit &amp; Induy</h2>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="p-4 rounded-2xl bg-white border border-babypink-200 space-y-2">
+                        <div class="flex items-center justify-between text-xs font-semibold text-rosewood">
+                            <span>Progress Impian Kita</span>
+                            <span id="bucket-progress-text" class="font-mono text-[11px] text-babypink-600">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 rounded-full bg-babypink-100 overflow-hidden">
+                            <div id="bucket-progress-bar" class="h-full bg-gradient-to-r from-babypink-500 to-rosewood transition-all duration-500" style="width: 40%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="setBucketFilter('all', this)" class="bucket-tab-btn px-4 py-1.5 rounded-full bg-babypink-500 text-white text-xs font-semibold transition">Semua Misi</button>
+                        <button type="button" onclick="setBucketFilter('ldr', this)" class="bucket-tab-btn px-4 py-1.5 rounded-full bg-white text-rosewood text-xs font-semibold transition">🌐 Misi Virtual LDR</button>
+                        <button type="button" onclick="setBucketFilter('meet', this)" class="bucket-tab-btn px-4 py-1.5 rounded-full bg-white text-rosewood text-xs font-semibold transition">✈️ Saat Ketemu Nanti</button>
+                    </div>
+
+                    <!-- Add New Bucket Mission Form -->
+                    <form id="bucket-add-form" class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="new-bucket-title" required placeholder="Tambah impian baru kita..." class="flex-1 px-4 py-2.5 rounded-full bg-white border border-babypink-200 text-xs focus:outline-none">
+                        <select id="new-bucket-cat" class="px-3 py-2.5 rounded-full bg-white border border-babypink-200 text-xs text-rosewood">
+                            <option value="ldr">🌐 Virtual LDR</option>
+                            <option value="meet">✈️ Saat Ketemu</option>
+                        </select>
+                        <button type="submit" class="px-5 py-2.5 rounded-full bg-rosewood hover:bg-babypink-600 text-white text-xs font-bold transition">+ Tambah</button>
+                    </form>
+
+                    <!-- Checklist Container -->
+                    <div id="bucket-list-container" class="space-y-2.5">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Right: Interactive Date Scratch-Card -->
+                <div class="lg:col-span-5 p-6 rounded-3xl bg-white/90 border-2 border-babypink-200 shadow-md text-center space-y-4">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🎰 MYSTERY DATE GENERATOR</span>
+                    <h3 class="font-serif text-2xl font-bold text-rosewood">Kartu Gosok Ide Kencan</h3>
+                    <p class="text-xs text-rosewood/70">Bingung malam ini mau ngapain? Gosok lapisan rose-gold di bawah pakai kursor atau jarimu!</p>
+
+                    <!-- Scratch Card Box -->
+                    <div class="relative w-full max-w-[340px] h-[190px] mx-auto rounded-2xl overflow-hidden border-2 border-babypink-300 bg-babypink-50 p-5 flex flex-col items-center justify-center shadow-inner select-none">
+                        <div>
+                            <h4 id="scratch-title" class="font-serif text-xl font-bold text-rosewood">Virtual Dinner Romantis 🍝</h4>
+                            <p id="scratch-desc" class="text-xs text-rosewood/80 mt-1 leading-relaxed">
+                                Pesan menu makanan yang sama lewat GoFood, lalu buka video call!
+                            </p>
+                            <p id="scratch-dresscode" class="text-[11px] font-mono text-babypink-600 font-semibold mt-3">
+                                🎧 Persiapan: Earphone &amp; Kamera On!
+                            </p>
+                        </div>
+
+                        <!-- Interactive Metallic Rose-Gold Scratch Canvas Overlay -->
+                        <canvas id="scratch-canvas" class="absolute inset-0 z-10 w-full h-full cursor-crosshair touch-none transition-opacity duration-500"></canvas>
+                    </div>
+
+                    <div class="flex flex-col gap-2.5 max-w-[340px] mx-auto pt-2">
+                        <div class="flex items-center justify-between">
+                            <span id="scratch-status-text" class="text-[11px] font-mono text-rosewood/60">Gosok lapisan emas di atas!</span>
+                            <button type="button" onclick="initScratchCard()" class="text-xs font-bold text-babypink-600 hover:underline">🔄 Acak Kartu Baru</button>
+                        </div>
+                        <button type="button" onclick="sendScratchDateToWa()" class="w-full py-3 px-4 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold uppercase tracking-wider shadow transition">
+                            👾 Kirim Undangan Date Ini ke Discord
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             10. VIRTUAL STICKY LOVE NOTES BOARD
+             ========================================== -->
+        <section id="notes-section" class="glass-panel rounded-[2.5rem] p-6 sm:p-10 space-y-6">
+            <div>
+                <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">📌 SHARED STICKY MEMO WALL</span>
+                <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rosewood">Papan Memo Cinta Adhit &amp; Induy</h2>
+            </div>
+
+            <!-- Add Note Form -->
+            <form id="note-upload-form" class="p-4 sm:p-5 rounded-3xl bg-white/90 border border-babypink-200 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                <input type="text" id="new-note-text" required placeholder="Tulis pesan manis atau pengingat buat kesayangan..." class="flex-1 px-4 py-2.5 rounded-2xl bg-babypink-50/70 border border-babypink-200 text-xs focus:outline-none">
+                <select id="new-note-color" class="px-3.5 py-2.5 rounded-2xl bg-babypink-50 border border-babypink-200 text-xs text-rosewood font-medium">
+                    <option value="pink">🌸 Kertas Pink</option>
+                    <option value="yellow">🌼 Kertas Cream</option>
+                    <option value="blue">☁️ Kertas Sky</option>
+                </select>
+                <button type="submit" class="px-6 py-2.5 rounded-full bg-rosewood hover:bg-babypink-600 text-white text-xs font-bold uppercase tracking-wider transition">
+                    📌 Tempel &amp; Kirim ke Discord
+                </button>
+            </form>
+
+            <!-- Sticky Notes Grid -->
+            <div id="notes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated by renderNotes() -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         11. FLOATING SPOTIFY VINYL PLAYER DOCK
+         ========================================== -->
+    <div class="fixed bottom-5 left-5 z-50 flex flex-col items-start gap-2">
+        <!-- Expandable Spotify Embed Drawer -->
+        <div id="spotify-drawer" class="hidden w-[300px] sm:w-[340px] glass-panel rounded-3xl p-3 border-2 border-white shadow-2xl">
+            <div class="flex items-center justify-between px-2 pb-2">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-babypink-600 font-bold">🎵 OUR SPOTIFY PLAYLIST</span>
+                <button type="button" onclick="toggleSpotifyDrawer()" class="text-xs font-bold text-rosewood/60 hover:text-rosewood">✕ Tutup</button>
+            </div>
+            <div id="spotify-iframe"></div>
+        </div>
+
+        <!-- Vinyl Floating Pill -->
+        <div class="glass-panel rounded-full p-1.5 pr-4 flex items-center gap-2.5 border-2 border-white shadow-xl">
+            <button type="button" id="vinyl-disc-btn" onclick="toggleSpotifyPlayback()" class="w-10 h-10 rounded-full bg-rosewood text-white flex items-center justify-center text-lg shadow-md hover:scale-105 transition">
+                💿
+            </button>
+            <div class="cursor-pointer" onclick="toggleSpotifyDrawer()">
+                <p id="music-status-label" class="text-[11px] font-bold text-rosewood leading-tight">Playlist Adhit &amp; Induy</p>
+                <p class="text-[9px] font-mono text-babypink-600">Klik buka/tutup Spotify</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spotify Official Embed Iframe API Script -->
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+
+    <!-- ==========================================
+         12. MODALS (PIN GATE, DISCORD, VOUCHER, STATUS)
+         ========================================== -->
+    <!-- Modal 1: PIN Security Gate (0511) -->
+    <div id="pin-modal" class="hidden fixed inset-0 z-[120] bg-rosewood/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="max-w-sm w-full glass-panel rounded-3xl p-6 text-center space-y-4 border-2 border-white shadow-2xl">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-babypink-100 flex items-center justify-center text-2xl">🔐</div>
+            <h3 class="font-serif text-2xl font-bold text-rosewood">PIN Pasangan (0511)</h3>
+            <p class="text-xs text-rosewood/75">Masukkan 4 digit tanggal jadian Adhit &amp; Induy (<strong class="text-babypink-600">0511</strong>) untuk membuka kunci fitur ini.</p>
+            <input type="password" id="pin-code-input" maxlength="4" placeholder="••••" class="w-36 mx-auto block text-center font-mono text-2xl tracking-widest px-4 py-2.5 rounded-2xl bg-white border-2 border-babypink-300 focus:outline-none focus:border-babypink-500">
+            <div class="flex gap-2 justify-center pt-2">
+                <button type="button" onclick="closePinModal()" class="px-5 py-2.5 rounded-full bg-white border border-babypink-200 text-xs font-semibold text-rosewood">Batal</button>
+                <button type="button" onclick="verifyPinCode()" class="px-6 py-2.5 rounded-full bg-rosewood text-white text-xs font-bold shadow">Buka Kunci</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Voucher Claim to Discord -->
+    <div id="voucher-claim-modal" class="hidden fixed inset-0 z-[120] bg-rosewood/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="max-w-md w-full glass-panel rounded-3xl p-6 space-y-4 border-2 border-white shadow-2xl">
+            <h3 class="font-serif text-2xl font-bold text-rosewood">🎟️ Klaim Voucher LDR ke Grup Discord</h3>
+            <p class="text-xs text-rosewood/75">Tuliskan request khususmu (contoh: makanan yang diinginkan atau jam sleep call) agar langsung otomatis masuk ke channel Discord kalian:</p>
+            <textarea id="voucher-request-input" rows="3" placeholder="Contoh: Lagi pengen Matcha Latte & Dimsum yaa sayang..." class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-babypink-300 text-xs focus:outline-none"></textarea>
+            <div class="flex gap-2 justify-end">
+                <button type="button" onclick="closeVoucherModal()" class="px-5 py-2.5 rounded-full bg-white border border-babypink-200 text-xs font-semibold text-rosewood">Batal</button>
+                <button type="button" onclick="submitVoucherClaim()" class="px-6 py-2.5 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold shadow">👾 Kirim Tiket Klaim ke Discord</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Discord Webhook Configuration -->
+    <div id="wa-config-modal" class="hidden fixed inset-0 z-[120] bg-rosewood/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="max-w-md w-full glass-panel rounded-3xl p-6 space-y-4 border-2 border-white shadow-2xl">
+            <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-xl bg-[#5865F2] text-white flex items-center justify-center text-lg">👾</span>
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-rosewood leading-none">Integrasi Grup Discord</h3>
+                    <span class="text-[10px] font-mono text-rosewood/60">Otomatis Kirim Rich Embed ke Server Discord</span>
+                </div>
+            </div>
+            <p class="text-xs text-rosewood/75 leading-relaxed">
+                Tempelkan <strong>Discord Webhook URL</strong> dari channel grup Discord kalian (<em>Edit Channel &rarr; Integrations &rarr; Webhooks &rarr; Copy Webhook URL</em>). Semua aktivitas website akan otomatis terkirim ke sana tanpa perlu pindah tab!
+            </p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[11px] font-bold text-rosewood mb-1">🔗 Discord Webhook URL Grup Kalian:</label>
+                    <input type="url" id="discord-webhook-input" placeholder="https://discord.com/api/webhooks/..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-babypink-300 text-xs font-mono focus:outline-none focus:border-[#5865F2]">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[10px] font-bold text-rosewood mb-1">👦🏻 Discord User ID Adhit (Opsional untuk @mention):</label>
+                        <input type="text" id="adhit-discord-id-input" placeholder="Contoh: 123456789012345678" class="w-full px-3 py-2 rounded-xl bg-white border border-babypink-200 text-[11px] font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-rosewood mb-1">👧🏻 Discord User ID Induy (Opsional untuk @mention):</label>
+                        <input type="text" id="induy-discord-id-input" placeholder="Contoh: 987654321098765432" class="w-full px-3 py-2 rounded-xl bg-white border border-babypink-200 text-[11px] font-mono">
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <button type="button" onclick="testDiscordWebhookConnection()" class="px-4 py-2 rounded-full bg-babypink-100 hover:bg-babypink-200 text-rosewood text-[11px] font-bold transition">
+                    ⚡ Tes Kirim Pesan ke Discord
+                </button>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeWaConfigModal()" class="px-4 py-2 rounded-full bg-white border border-babypink-200 text-xs font-semibold text-rosewood">Tutup</button>
+                    <button type="button" onclick="saveWaConfigNumbers()" class="px-5 py-2 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold shadow">Simpan Webhook</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Update LDR Station Status & Target Meetup Date -->
+    <div id="status-update-modal" class="hidden fixed inset-0 z-[120] bg-rosewood/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="max-w-md w-full glass-panel rounded-3xl p-6 space-y-4 border-2 border-white shadow-2xl">
+            <h3 class="font-serif text-2xl font-bold text-rosewood">✏️ Update Kabar &amp; Jadwal Ketemu</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[11px] font-bold text-rosewood mb-1">✈️ Target Tanggal Ketemu Berikutnya (Makassar ⇄ Depok):</label>
+                    <input type="date" id="input-meetup-date" class="w-full px-3.5 py-2 rounded-xl bg-babypink-50/80 border border-babypink-300 text-xs font-mono text-rosewood focus:outline-none focus:border-babypink-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-rosewood mb-1">👦🏻 Kabar / Status Adhit (Makassar):</label>
+                    <input type="text" id="input-adhit-status" class="w-full px-3.5 py-2 rounded-xl bg-white border border-babypink-300 text-xs">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-rosewood mb-1">👧🏻 Kabar / Status Induy (Depok):</label>
+                    <input type="text" id="input-induy-status" class="w-full px-3.5 py-2 rounded-xl bg-white border border-babypink-300 text-xs">
+                </div>
+            </div>
+            <div class="flex gap-2 justify-end pt-2">
+                <button type="button" onclick="closeStatusUpdateModal()" class="px-4 py-2.5 rounded-full bg-white border border-babypink-200 text-xs font-semibold text-rosewood">Batal</button>
+                <button type="button" onclick="saveStatusUpdateAndWa()" class="px-5 py-2.5 rounded-full bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold">Simpan &amp; Otomatis ke Discord</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         13. COMPLETE APPLICATION JAVASCRIPT
+         ========================================== -->
+    <script>
+        // --- 1. APPLICATION STATE ---
+        let activeUserIdentity = 'Adhit'; // 'Adhit' sends WA to Induy, 'Induy' sends WA to Adhit
+        let pendingVoucherClaimId = null;
+        let isPinUnlocked = false;
+        let pendingPinCallback = null;
+
+        // Slideshow State
+        let activeSlideIndex = 0;
+        let isSlidePlaying = true;
+        let isSlideHovered = false;
+        let slideProgress = 0;
+        let slideObjectFitMode = 'contain';
+
+        // Photobox Customizer State
+        let selectedPhotoboxPhotoIds = ['p1', 'p2', 'p3'];
+        let stripTheme = 'pink';
+        let stripFilter = 'normal';
+        let stripFooterText = 'Walau Jauh Tetap Satu Frame';
+        let stripStampText = '05.11.2025 • LDR LOVE VAULT';
+        let showOrnamentPov = true;
+        let showOrnamentRibbon = true;
+        let showOrnamentSparkle = true;
+
+        // Bucket List & Official Spotify Controller State
+        let activeBucketFilter = 'all';
+        let spotifyController = null;
+        let isSpotifyPlaying = false;
+
+        // Initialize Official Spotify Embed Controller API
+        window.onSpotifyIframeApiReady = (IFrameAPI) => {
+            const element = document.getElementById('spotify-iframe');
+            if (!element) return;
+            const options = {
+                uri: 'spotify:playlist:2wqA72Y3ybmBsPyNo1bgRl',
+                width: '100%',
+                height: '152'
+            };
+            const callback = (EmbedController) => {
+                spotifyController = EmbedController;
+                EmbedController.addListener('playback_update', (e) => {
+                    const discBtn = document.getElementById('vinyl-disc-btn');
+                    const label = document.getElementById('music-status-label');
+                    isSpotifyPlaying = !e.data.isPaused;
+                    if (isSpotifyPlaying) {
+                        if (discBtn) discBtn.classList.add('vinyl-spinning');
+                        if (label) label.innerText = 'Spotify Sedang Berputar ♪';
+                    } else {
+                        if (discBtn) discBtn.classList.remove('vinyl-spinning');
+                        if (label) label.innerText = 'Spotify Dijeda (Klik 💿)';
+                    }
+                });
+            };
+            IFrameAPI.createController(element, options, callback);
+        };
+
+        // --- 2. DEFAULT DATA STORE ---
+        const DEFAULT_DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1566093704777703566/DCBItbxY95wcJ7L4wLdrcHF9ldXNml7IO8L1sKz86I9OaYCbVPsDH2HxMPPiOw17sa1w';
+
+        let vaultData = {
+            discordWebhookUrl: DEFAULT_DISCORD_WEBHOOK,
+            adhitDiscordId: '',
+            induyDiscordId: '',
+            meetupDateISO: '2026-11-15',
+            adhitStatus: 'Dari Makassar kangen Induy di Depok, siap sleep call malam ini 🌙',
+            induyStatus: 'Semangat hari ini di Depok! Nanti malam cerita banyak yaa 💗',
+            photos: [
+                { id: 'p1', url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&auto=format&fit=crop&q=80', caption: 'Pertama kali kita video call berjam-jam Makassar - Depok tanpa kenal waktu', date: '05 Nov 2025', pov: '💑 Momen Bersama' },
+                { id: 'p2', url: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=800&auto=format&fit=crop&q=80', caption: 'PAP secangkir kopi di Makassar sambil mikirin kamu di Depok', date: '12 Jan 2026', pov: '👦🏻 POV Adhit (Makassar)' },
+                { id: 'p3', url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=80', caption: 'PAP senja cantik dari Depok buat penyemangat Adhit di Makassar', date: '18 Feb 2026', pov: '👧🏻 POV Induy (Depok)' },
+                { id: 'p4', url: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop&q=80', caption: 'Watch party film favorit bareng sebelum tidur walau beda 1 jam WITA-WIB', date: '02 Mar 2026', pov: '💑 Momen Bersama' }
+            ],
+            timeline: [],
+            notes: [
+                { id: 'n1', sender: 'Adhit', text: 'Sayangku Induy, semangat ya hari ini! Jangan lupa makan tepat waktu 💗', color: 'pink', date: 'Hari ini' },
+                { id: 'n2', sender: 'Induy', text: 'Kangen banget sama Adhit! Ga sabar nunggu jadwal ketemu kita berikutnya ✈️', color: 'yellow', date: 'Kemarin' }
+            ],
+            buckets: [
+                { id: 'b1', title: 'Traktir makanan kesukaan lewat GoFood saat hujan', cat: 'ldr', done: true },
+                { id: 'b2', title: 'Sleep call maraton nonton film bareng', cat: 'ldr', done: true },
+                { id: 'b3', title: 'Photobox berdua langsung di studio saat pertama ketemu', cat: 'meet', done: false },
+                { id: 'b4', title: 'Nongkrong di cafe sunset favorit sambil gandengan tangan', cat: 'meet', done: false },
+                { id: 'b5', title: 'Main game co-op / Roblox mabar sampai malam', cat: 'ldr', done: false }
+            ],
+            vouchers: [
+                { id: 'v1', title: '🛵 Voucher Traktir GoFood / GrabFood Favorit', desc: 'Bebas pilih makanan/minuman apa aja, langsung dikirim ke alamatmu!', claimed: false, claimInfo: null },
+                { id: 'v2', title: '🌙 Voucher Sleep Call Sampai Pagi', desc: 'Temenin cerita panjang lebar sampai ketiduran tanpa boleh mengeluh ngantuk.', claimed: false, claimInfo: null },
+                { id: 'v3', title: '🎮 Voucher Main Game Bareng (Roblox / Co-op)', desc: 'Bebas pilih map atau game selama 2 jam penuh sambil voice call.', claimed: false, claimInfo: null },
+                { id: 'v4', title: '🍿 Voucher Netflix / YouTube Watch Party', desc: 'Nonton bareng via share screen, bebas pilih film kesukaanmu.', claimed: false, claimInfo: null },
+                { id: 'v5', title: '🛍️ Voucher Checkout 1 Barang Wishlist Online Shop', desc: 'Hadiah spesial kejutan langsung dikirim ke rumah kesayangan.', claimed: false, claimInfo: null }
+            ],
+            hugsCount: 28,
+            lastHugText: 'Kirim pelukan virtual kapan pun kamu lagi kangen pasanganmu!',
+            capsuleSecret: 'Sayangku Induy, terima kasih sudah bertahan hebat sejauh ini mendampingi Adhit sejak 5 November 2025. Jarak ini cuma angka, cinta kita jauh lebih kuat! I love you endlessly.'
+        };
+
+        function saveVaultData() {
+            try {
+                localStorage.setItem('adhit_induy_vault_v4', JSON.stringify(vaultData));
+            } catch (e) {
+                console.warn('Storage warning', e);
+            }
+        }
+
+        function loadVaultData() {
+            try {
+                const raw = localStorage.getItem('adhit_induy_vault_v4');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    vaultData = { ...vaultData, ...parsed };
+                }
+                if (!vaultData.discordWebhookUrl) {
+                    vaultData.discordWebhookUrl = DEFAULT_DISCORD_WEBHOOK;
+                }
+            } catch (e) {
+                console.warn('Load warning', e);
+            }
+            const hookInput = document.getElementById('discord-webhook-input');
+            const adhitIdInput = document.getElementById('adhit-discord-id-input');
+            const induyIdInput = document.getElementById('induy-discord-id-input');
+            if (hookInput) hookInput.value = vaultData.discordWebhookUrl || DEFAULT_DISCORD_WEBHOOK;
+            if (adhitIdInput) adhitIdInput.value = vaultData.adhitDiscordId || '';
+            if (induyIdInput) induyIdInput.value = vaultData.induyDiscordId || '';
+        }
+
+        // --- 3. TOAST & AUTOMATIC DISCORD WEBHOOK ENGINE ---
+        function showToast(title, message, icon = '💗') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'max-w-xs w-full bg-white/95 backdrop-blur-md border border-babypink-300 shadow-xl rounded-2xl p-4 flex items-start gap-3 pointer-events-auto transform translate-y-4 opacity-0 transition-all duration-300';
+            toast.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-babypink-100 flex items-center justify-center text-lg flex-shrink-0 shadow-sm">${icon}</div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-xs font-bold text-rosewood truncate">${title}</h4>
+                    <p class="text-[11px] text-rosewood/70 mt-0.5 leading-relaxed">${message}</p>
+                </div>
+            `;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-y-4', 'opacity-0'));
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        async function sendDiscordToGroup(rawTextMessage, customOptions = {}) {
+            const webhookUrl = (vaultData.discordWebhookUrl || '').trim();
+            const partnerName = (activeUserIdentity === 'Adhit') ? 'Induy' : 'Adhit';
+            const partnerDiscordId = (activeUserIdentity === 'Adhit')
+                ? (vaultData.induyDiscordId || '').trim()
+                : (vaultData.adhitDiscordId || '').trim();
+
+            if (!webhookUrl || !webhookUrl.startsWith('https://discord')) {
+                showToast('Set Discord Webhook Dulu!', 'Klik tombol 👾 Set Discord di kanan atas untuk menempelkan link Webhook grup Discord kamu.', '👾');
+                openWaConfigModal();
+                return;
+            }
+
+            const mentionTag = partnerDiscordId ? `<@${partnerDiscordId}>` : `@here`;
+            const embedTitle = customOptions.title || `💌 Aktivitas Baru dari ${activeUserIdentity}`;
+
+            const embedObject = {
+                title: embedTitle,
+                description: rawTextMessage,
+                color: 14248842, // Baby Pink Rose (#D96B8A)
+                footer: {
+                    text: `Adhit & Induy LDR Love Vault • Dikirim oleh ${activeUserIdentity}`
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            if (customOptions.imageUrl && customOptions.imageUrl.startsWith('http')) {
+                embedObject.image = { url: customOptions.imageUrl };
+            }
+
+            const payload = {
+                username: `Adhit & Induy Love Bot (${activeUserIdentity})`,
+                content: `🔔 Halo **${partnerName}** ${mentionTag}! Ada kabar baru dari **${activeUserIdentity}** di Ruang Kenangan kita:`,
+                embeds: [embedObject]
+            };
+
+            try {
+                const res = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    showToast('Terkirim ke Grup Discord!', `Notifikasi otomatis masuk ke channel Discord kalian untuk ${partnerName}.`, '👾');
+                } else {
+                    showToast('Gagal Mengirim ke Discord', 'Pastikan URL Discord Webhook masih aktif dan benar.', '⚠️');
+                }
+            } catch (err) {
+                console.warn('Discord Webhook error:', err);
+                showToast('Error Koneksi Discord', 'Tidak dapat menghubungi Webhook Discord.', '⚠️');
+            }
+        }
+
+        // Alias agar semua fungsi yang sudah ada otomatis mengalir ke Discord
+        function sendWhatsAppToPartner(textMessage, customOptions = {}) {
+            return sendDiscordToGroup(textMessage, customOptions);
+        }
+
+        function testDiscordWebhookConnection() {
+            const hookInput = document.getElementById('discord-webhook-input');
+            const adhitIdInput = document.getElementById('adhit-discord-id-input');
+            const induyIdInput = document.getElementById('induy-discord-id-input');
+            if (hookInput) vaultData.discordWebhookUrl = hookInput.value.trim();
+            if (adhitIdInput) vaultData.adhitDiscordId = adhitIdInput.value.trim();
+            if (induyIdInput) vaultData.induyDiscordId = induyIdInput.value.trim();
+            saveVaultData();
+
+            sendDiscordToGroup(
+                `✨ **KONEKSI DISCORD BERHASIL TERHUBUNG!**\nSekarang setiap klaim voucher, pelukan virtual, upload PAP/Photobox, kartu gosok date, dan memo cinta dari website **Adhit & Induy** akan otomatis masuk ke grup Discord ini! 💗`,
+                { title: '👾 Tes Koneksi Server Discord Adhit & Induy' }
+            );
+        }
+
+        function triggerSosWa(type) {
+            const partnerName = (activeUserIdentity === 'Adhit') ? 'Induy' : 'Adhit';
+            let msg = '';
+            let title = '';
+            if (type === 'sleepcall') {
+                title = `🌙 Ajakan Sleep Call di Voice Discord!`;
+                msg = `Sayangku **${partnerName}**, nanti malam masuk Voice Channel Discord yuk buat sleep call! Kangen banget pengen denger suara kamu sebelum tidur 💗`;
+            } else if (type === 'pap') {
+                title = `📸 Tagihan PAP Harian!`;
+                msg = `Halo kesayangan **${activeUserIdentity}**, kirim PAP sekarang dong ke grup Discord ini atau upload di website! Lagi kangen berat nih 🥺💗`;
+            } else if (type === 'makan') {
+                title = `🍱 Pengingat Makan & Jaga Kesehatan`;
+                msg = `Jangan lupa makan tepat waktu dan minum air putih yang cukup ya sayangku **${partnerName}**! Jaga kesehatan terus buat aku 💗`;
+            } else if (type === 'bujuk') {
+                title = `🏳️ Bendera Putih Cinta`;
+                msg = `Sayangku **${partnerName}**, jangan ngambek lama-lama yaa... **${activeUserIdentity}** sayang banget sama kamu, yuk baikan dan senyum lagi 🥺🤍`;
+            }
+            sendDiscordToGroup(msg, { title });
+        }
+
+        // --- 4. WELCOME GATE & PURE SPOTIFY CONTROLLER ---
+        function toggleSpotifyPlayback() {
+            const drawer = document.getElementById('spotify-drawer');
+            if (spotifyController) {
+                spotifyController.togglePlay();
+            } else {
+                // Fallback if Spotify API is still loading: open the Spotify drawer
+                if (drawer) drawer.classList.remove('hidden');
+                showToast('Spotify Player', 'Silakan klik tombol Play pada panel Spotify di kiri bawah.', '🎵');
+            }
+        }
+
+        function toggleSpotifyDrawer() {
+            const drawer = document.getElementById('spotify-drawer');
+            if (drawer) drawer.classList.toggle('hidden');
+        }
+
+        function bootVaultAppWithAudio() {
+            const gate = document.getElementById('intro-gate');
+            if (gate) {
+                gate.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                }, 650);
+            }
+            const drawer = document.getElementById('spotify-drawer');
+            if (drawer) drawer.classList.remove('hidden');
+
+            // Trigger pure Spotify playback on entry click
+            if (spotifyController) {
+                try {
+                    spotifyController.play();
+                } catch (err) {
+                    console.warn('Spotify autoplay fallback', err);
+                }
+            }
+            showToast('Selamat Datang!', `Ruang Kenangan Adhit & Induy terbuka (Mode: ${activeUserIdentity}) 💗`, '✨');
+        }
+
+        // --- 5. IDENTITY & MODALS ---
+        function switchIdentity(identity) {
+            activeUserIdentity = identity;
+            const topAdhit = document.getElementById('identity-btn-adhit');
+            const topInduy = document.getElementById('identity-btn-induy');
+            const gateAdhit = document.getElementById('gate-btn-adhit');
+            const gateInduy = document.getElementById('gate-btn-induy');
+
+            if (identity === 'Adhit') {
+                if (topAdhit) topAdhit.className = 'px-2.5 py-1 rounded-full bg-babypink-500 text-white text-[10px] font-bold shadow transition';
+                if (topInduy) topInduy.className = 'px-2.5 py-1 rounded-full text-rosewood text-[10px] font-medium transition';
+                if (gateAdhit) gateAdhit.className = 'py-2.5 px-4 rounded-xl bg-babypink-500 text-white text-xs font-bold shadow transition';
+                if (gateInduy) gateInduy.className = 'py-2.5 px-4 rounded-xl bg-white text-rosewood border border-babypink-200 text-xs font-semibold transition';
+            } else {
+                if (topInduy) topInduy.className = 'px-2.5 py-1 rounded-full bg-babypink-500 text-white text-[10px] font-bold shadow transition';
+                if (topAdhit) topAdhit.className = 'px-2.5 py-1 rounded-full text-rosewood text-[10px] font-medium transition';
+                if (gateInduy) gateInduy.className = 'py-2.5 px-4 rounded-xl bg-babypink-500 text-white text-xs font-bold shadow transition';
+                if (gateAdhit) gateAdhit.className = 'py-2.5 px-4 rounded-xl bg-white text-rosewood border border-babypink-200 text-xs font-semibold transition';
+            }
+            showToast('Identitas Aktif', `Kamu masuk sebagai ${identity}. Semua aksi otomatis dikirim ke grup Discord untuk ${identity === 'Adhit' ? 'Induy' : 'Adhit'}.`, identity === 'Adhit' ? '👦🏻' : '👧🏻');
+        }
+
+        function openWaConfigModal() {
+            const modal = document.getElementById('wa-config-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+        function closeWaConfigModal() {
+            const modal = document.getElementById('wa-config-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+        function saveWaConfigNumbers() {
+            const hookInput = document.getElementById('discord-webhook-input');
+            const adhitIdInput = document.getElementById('adhit-discord-id-input');
+            const induyIdInput = document.getElementById('induy-discord-id-input');
+            if (hookInput) vaultData.discordWebhookUrl = hookInput.value.trim();
+            if (adhitIdInput) vaultData.adhitDiscordId = adhitIdInput.value.trim();
+            if (induyIdInput) vaultData.induyDiscordId = induyIdInput.value.trim();
+            saveVaultData();
+            closeWaConfigModal();
+            showToast('Discord Webhook Tersimpan', 'Grup Discord berhasil terhubung secara otomatis!', '👾');
+        }
+
+        function openStatusUpdateModal() {
+            const a = document.getElementById('input-adhit-status');
+            const i = document.getElementById('input-induy-status');
+            const m = document.getElementById('input-meetup-date');
+            if (a) a.value = vaultData.adhitStatus;
+            if (i) i.value = vaultData.induyStatus;
+            if (m) m.value = vaultData.meetupDateISO || '2026-11-15';
+            const modal = document.getElementById('status-update-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+        function closeStatusUpdateModal() {
+            const modal = document.getElementById('status-update-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+        function formatIndonesianDate(isoDateStr) {
+            if (!isoDateStr) return '15 November 2026';
+            const parts = isoDateStr.split('-');
+            if (parts.length !== 3) return isoDateStr;
+            const dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+            return dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+        function saveStatusUpdateAndWa() {
+            const a = document.getElementById('input-adhit-status');
+            const i = document.getElementById('input-induy-status');
+            const m = document.getElementById('input-meetup-date');
+            if (a && a.value.trim()) vaultData.adhitStatus = a.value.trim();
+            if (i && i.value.trim()) vaultData.induyStatus = i.value.trim();
+            if (m && m.value) vaultData.meetupDateISO = m.value;
+            saveVaultData();
+            updateLdrHub();
+            closeStatusUpdateModal();
+            const statusNow = activeUserIdentity === 'Adhit' ? vaultData.adhitStatus : vaultData.induyStatus;
+            const formattedMeetup = formatIndonesianDate(vaultData.meetupDateISO);
+            showToast('Kabar & Jadwal Diperbarui!', `Target ketemu: ${formattedMeetup}`, '✈️');
+            sendDiscordToGroup(
+                `• **Kabar ${activeUserIdentity}:** "${statusNow}"\n• **Target Tanggal Ketemu:** ✈️ **${formattedMeetup}**\n\n_Stasiun Rindu LDR & Countdown Ketemu telah diperbarui di website kita!_ 💗`,
+                { title: `✈️ Update Stasiun LDR & Jadwal Ketemu (${activeUserIdentity})` }
+            );
+        }
+
+        // --- 6. PIN SECURITY GATE (0511) ---
+        function initPinGate() {
+            const pinInput = document.getElementById('pin-code-input');
+            if (pinInput) {
+                pinInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') verifyPinCode();
+                });
+            }
+        }
+
+        function openPinModal(callback = null) {
+            if (isPinUnlocked) {
+                if (typeof callback === 'function') callback();
+                return;
+            }
+            pendingPinCallback = callback;
+            const modal = document.getElementById('pin-modal');
+            const input = document.getElementById('pin-code-input');
+            if (modal) modal.classList.remove('hidden');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function closePinModal() {
+            const modal = document.getElementById('pin-modal');
+            if (modal) modal.classList.add('hidden');
+            pendingPinCallback = null;
+        }
+
+        function verifyPinCode() {
+            const input = document.getElementById('pin-code-input');
+            const code = input ? input.value.trim() : '';
+            if (code === '0511') {
+                isPinUnlocked = true;
+                const pinBtn = document.getElementById('top-pin-btn');
+                if (pinBtn) {
+                    pinBtn.innerText = '🔓 Mode Pasangan Aktif';
+                    pinBtn.className = 'px-3 py-1.5 rounded-full bg-babypink-500 text-white text-[10px] font-mono font-bold shadow transition';
+                }
+                closePinModal();
+                showToast('Akses Pasangan Terbuka!', 'PIN 0511 benar. Seluruh fitur edit & kapsul waktu terbuka.', '🔓');
+                if (typeof pendingPinCallback === 'function') {
+                    const cb = pendingPinCallback;
+                    pendingPinCallback = null;
+                    cb();
+                }
+            } else {
+                showToast('PIN Salah', 'Gunakan 4 digit tanggal jadian: 0511', '🔒');
+            }
+        }
+
+        // --- 7. HERO 2: WIDESCREEN SLIDESHOW ENGINE ---
+        function renderSlideshow() {
+            const container = document.getElementById('slideshow-container');
+            const thumbs = document.getElementById('slideshow-thumbs');
+            if (!container || !vaultData.photos.length) return;
+
+            if (activeSlideIndex >= vaultData.photos.length) activeSlideIndex = 0;
+            const currentPhoto = vaultData.photos[activeSlideIndex];
+
+            const heroImg = document.getElementById('hero-featured-img');
+            if (heroImg && vaultData.photos[0]) {
+                heroImg.src = vaultData.photos[0].url;
+            }
+
+            const fitClass = slideObjectFitMode === 'contain' ? 'object-contain' : 'object-cover';
+
+            container.innerHTML = `
+                <!-- Layer 1: Ambient Dynamic Blurred Backdrop -->
+                <img src="${currentPhoto.url}" alt="Backdrop" class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-60 transition-all duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-rosewood/80 via-rosewood/20 to-rosewood/30"></div>
+
+                <!-- Layer 2: Crisp Widescreen Editorial Frame -->
+                <div class="relative z-10 w-full h-full flex items-center justify-center p-4 sm:p-8">
+                    <img src="${currentPhoto.url}" alt="${currentPhoto.caption}" class="max-h-full max-w-full ${fitClass} rounded-2xl shadow-2xl border-2 border-white/90 transition-all duration-700">
+                </div>
+
+                <!-- Top Badges -->
+                <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
+                    <span class="px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-rosewood text-[11px] font-bold shadow">
+                        ${currentPhoto.pov || '💑 Momen Bersama'}
+                    </span>
+                    <span class="px-3 py-1 rounded-full bg-rosewood/80 text-white text-[10px] font-mono">
+                        ${activeSlideIndex + 1} / ${vaultData.photos.length} • ${currentPhoto.date}
+                    </span>
+                </div>
+
+                <!-- Bottom Caption & Controls -->
+                <div class="absolute bottom-4 left-4 right-4 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                    <div class="bg-rosewood/75 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 text-white max-w-xl">
+                        <p class="font-serif text-base sm:text-xl font-bold leading-snug">"${currentPhoto.caption}"</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-end">
+                        <button type="button" onclick="prevSlide()" class="w-9 h-9 rounded-full bg-white/90 hover:bg-white text-rosewood font-bold shadow flex items-center justify-center">‹</button>
+                        <button type="button" onclick="toggleSlidePlay()" class="px-3.5 h-9 rounded-full bg-white/90 hover:bg-white text-rosewood text-xs font-bold shadow flex items-center justify-center">
+                            ${isSlidePlaying ? '⏸ Pause' : '▶ Play'}
+                        </button>
+                        <button type="button" onclick="nextSlide()" class="w-9 h-9 rounded-full bg-white/90 hover:bg-white text-rosewood font-bold shadow flex items-center justify-center">›</button>
+                    </div>
+                </div>
+            `;
+
+            if (thumbs) {
+                thumbs.innerHTML = vaultData.photos.map((p, idx) => `
+                    <button type="button" onclick="goToSlide(${idx})" class="relative flex-shrink-0 w-20 h-14 rounded-xl overflow-hidden border-2 transition ${idx === activeSlideIndex ? 'border-babypink-500 scale-105 shadow-md' : 'border-white/70 opacity-65 hover:opacity-100'}">
+                        <img src="${p.url}" class="w-full h-full object-cover" alt="thumb">
+                    </button>
+                `).join('');
+            }
+        }
+
+        function prevSlide() {
+            activeSlideIndex = (activeSlideIndex - 1 + vaultData.photos.length) % vaultData.photos.length;
+            slideProgress = 0;
+            renderSlideshow();
+        }
+        function nextSlide() {
+            activeSlideIndex = (activeSlideIndex + 1) % vaultData.photos.length;
+            slideProgress = 0;
+            renderSlideshow();
+        }
+        function goToSlide(idx) {
+            activeSlideIndex = idx;
+            slideProgress = 0;
+            renderSlideshow();
+        }
+        function toggleSlidePlay() {
+            isSlidePlaying = !isSlidePlaying;
+            renderSlideshow();
+        }
+        function toggleSlideFitMode() {
+            slideObjectFitMode = slideObjectFitMode === 'contain' ? 'cover' : 'contain';
+            const btn = document.getElementById('fit-mode-btn');
+            if (btn) btn.innerText = slideObjectFitMode === 'contain' ? '📐 Mode: Utuh (Contain)' : '📐 Mode: Penuh (Cover)';
+            renderSlideshow();
+        }
+        function initSlideshowLoop() {
+            setInterval(() => {
+                if (!isSlidePlaying || isSlideHovered) return;
+                slideProgress += 25;
+                if (slideProgress >= 100) {
+                    nextSlide();
+                }
+            }, 1100);
+        }
+
+        // --- 8. AUTO-PHOTOBOX STUDIO & PNG GENERATOR ---
+        function renderPhotobox() {
+            const grid = document.getElementById('photobox-selection-grid');
+            const preview = document.getElementById('photobox-strip-preview');
+            if (!grid || !preview) return;
+
+            grid.innerHTML = vaultData.photos.map(p => {
+                const isSelected = selectedPhotoboxPhotoIds.includes(p.id);
+                const orderNum = selectedPhotoboxPhotoIds.indexOf(p.id) + 1;
+                return `
+                    <div onclick="toggleSelectPhotoboxPhoto('${p.id}')" class="cursor-pointer relative aspect-square rounded-xl overflow-hidden border-2 transition ${isSelected ? 'border-babypink-500 shadow-md' : 'border-white opacity-75 hover:opacity-100'}">
+                        <img src="${p.url}" class="w-full h-full object-cover" alt="pick">
+                        ${isSelected ? `<span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-babypink-500 text-white text-[10px] font-bold flex items-center justify-center shadow">${orderNum}</span>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const chosenPhotos = selectedPhotoboxPhotoIds
+                .map(id => vaultData.photos.find(p => p.id === id))
+                .filter(Boolean);
+            while (chosenPhotos.length < 3 && vaultData.photos.length > 0) {
+                chosenPhotos.push(vaultData.photos[chosenPhotos.length % vaultData.photos.length]);
+            }
+
+            let bgClass = 'bg-[#FFF5F8] text-rosewood border-babypink-300';
+            if (stripTheme === 'cream') bgClass = 'bg-[#FDFBF7] text-rosewood border-[#E6DEC8]';
+            if (stripTheme === 'rosewood') bgClass = 'bg-[#3A262A] text-white border-rosewood-light';
+            if (stripTheme === 'polkadot') bgClass = 'bg-gradient-to-b from-[#FCEEF2] to-[#FADADD] text-rosewood border-white';
+
+            let filterStyle = '';
+            if (stripFilter === 'blush') filterStyle = 'filter: contrast(1.04) saturate(1.18) sepia(0.08);';
+            if (stripFilter === 'retro') filterStyle = 'filter: sepia(0.28) contrast(0.95) brightness(1.03);';
+            if (stripFilter === 'bw') filterStyle = 'filter: grayscale(1) contrast(1.12);';
+
+            preview.innerHTML = `
+                <div class="p-4 rounded-[1.75rem] border-2 shadow-2xl ${bgClass} space-y-3 relative">
+                    <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest opacity-80">
+                        <span>🎀 ADHIT &amp; INDUY</span>
+                        <span>05.11.2025</span>
+                    </div>
+                    <div class="space-y-3">
+                        ${chosenPhotos.slice(0, 3).map((p) => `
+                            <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-black/10 border border-white/60 shadow-sm">
+                                <img src="${p.url}" style="${filterStyle}" class="w-full h-full object-cover" alt="strip-frame">
+                                <span class="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/55 text-white text-[8px] font-mono">
+                                    ${p.pov || '💑 Kita'}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="pt-2 text-center">
+                        <p class="font-serif italic font-bold text-sm">${stripFooterText}</p>
+                        <p class="text-[8px] font-mono uppercase tracking-widest opacity-65 mt-0.5">${stripStampText}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleSelectPhotoboxPhoto(photoId) {
+            const idx = selectedPhotoboxPhotoIds.indexOf(photoId);
+            if (idx > -1) {
+                if (selectedPhotoboxPhotoIds.length > 1) {
+                    selectedPhotoboxPhotoIds.splice(idx, 1);
+                }
+            } else {
+                if (selectedPhotoboxPhotoIds.length >= 3) {
+                    selectedPhotoboxPhotoIds.shift();
+                }
+                selectedPhotoboxPhotoIds.push(photoId);
+            }
+            renderPhotobox();
+        }
+        function setPhotoboxTheme(theme) {
+            stripTheme = theme;
+            renderPhotobox();
+        }
+        function setPhotoboxFilter(filter) {
+            stripFilter = filter;
+            renderPhotobox();
+        }
+        function updatePhotoboxFooter(val) {
+            stripFooterText = val || 'Adhit & Induy';
+            renderPhotobox();
+        }
+
+        function downloadPhotoboxPng() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 600;
+            canvas.height = 1350;
+            const ctx = canvas.getContext('2d');
+
+            if (stripTheme === 'rosewood') ctx.fillStyle = '#3A262A';
+            else if (stripTheme === 'cream') ctx.fillStyle = '#FDFBF7';
+            else ctx.fillStyle = '#FFF5F8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = stripTheme === 'rosewood' ? '#FADADD' : '#3A262A';
+            ctx.font = 'bold 20px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('ADHIT & INDUY • 05.11.2025', canvas.width / 2, 52);
+
+            const chosenPhotos = selectedPhotoboxPhotoIds
+                .map(id => vaultData.photos.find(p => p.id === id))
+                .filter(Boolean);
+            while (chosenPhotos.length < 3 && vaultData.photos.length > 0) {
+                chosenPhotos.push(vaultData.photos[chosenPhotos.length % vaultData.photos.length]);
+            }
+
+            let loaded = 0;
+            chosenPhotos.slice(0, 3).forEach((p, idx) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const yPos = 80 + idx * 380;
+                    ctx.drawImage(img, 45, yPos, 510, 350);
+                    loaded++;
+                    if (loaded === 3) finalizeDownload();
+                };
+                img.onerror = () => {
+                    loaded++;
+                    if (loaded === 3) finalizeDownload();
+                };
+                img.src = p.url;
+            });
+
+            function finalizeDownload() {
+                ctx.fillStyle = stripTheme === 'rosewood' ? '#FFFFFF' : '#3A262A';
+                ctx.font = 'italic bold 28px Georgia, serif';
+                ctx.fillText(stripFooterText, canvas.width / 2, 1265);
+                ctx.font = '15px monospace';
+                ctx.fillText('LDR LOVE VAULT • PHOTOBOX STUDIO', canvas.width / 2, 1305);
+
+                try {
+                    const link = document.createElement('a');
+                    link.download = `Photobox-Adhit-Induy-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    showToast('Strip Photobox Diunduh!', 'File PNG berhasil disimpan ke perangkatmu.', '📸');
+                } catch (e) {
+                    showToast('Info Unduhan', 'Gambar strip telah siap.', '📸');
+                }
+            }
+        }
+
+        // --- 9. TIMELINE & CAPSULE FUNCTIONS ---
+        function toggleAddTimelineForm() {
+            const form = document.getElementById('timeline-add-form');
+            if (form) form.classList.toggle('hidden');
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            if (!container) return;
+            if (!vaultData.timeline || vaultData.timeline.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 rounded-3xl bg-white/80 border border-dashed border-babypink-300 text-center space-y-2">
+                        <span class="text-2xl block">📖</span>
+                        <h3 class="font-serif text-lg font-bold text-rosewood">Belum Ada Babak Cerita</h3>
+                        <p class="text-xs text-rosewood/70">Klik tombol <strong>"+ Tambah Babak Cerita Baru"</strong> di kanan atas untuk mulai menulis kisah perjalanan cinta Adhit &amp; Induy.</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = vaultData.timeline.map((item, idx) => `
+                <div class="p-5 sm:p-6 rounded-3xl bg-white/90 border border-babypink-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full bg-babypink-100 text-babypink-600 text-[10px] font-mono font-bold">BABAK 0${idx + 1}</span>
+                            <span class="text-xs font-mono text-rosewood/60">${item.date}</span>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-rosewood">${item.title}</h3>
+                        <p class="text-xs sm:text-sm text-rosewood/75 leading-relaxed">${item.text}</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-center flex-shrink-0">
+                        <button type="button" onclick="shareStoryToDiscord(${idx})" class="px-4 py-2 rounded-full bg-babypink-100 hover:bg-[#5865F2] hover:text-white text-rosewood text-[11px] font-semibold transition">
+                            👾 Bagikan ke Discord
+                        </button>
+                        <button type="button" onclick="deleteTimelineStory('${item.id}')" class="px-3 py-2 rounded-full bg-white hover:bg-babypink-200 text-rosewood/70 text-[11px] border border-babypink-200 transition" title="Hapus Cerita">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteTimelineStory(id) {
+            vaultData.timeline = vaultData.timeline.filter(item => item.id !== id);
+            saveVaultData();
+            renderTimeline();
+            showToast('Cerita Dihapus', 'Babak cerita telah dihapus.', '🗑️');
+        }
+
+        function shareStoryToDiscord(idx) {
+            const item = vaultData.timeline[idx];
+            if (!item) return;
+            sendDiscordToGroup(`• **Babak 0${idx + 1}:** ${item.title} (${item.date})\n• **Kisah Kita:** "${item.text}"`, {
+                title: `📖 Mengenang Kisah Adhit & Induy`
+            });
+        }
+
+        function unlockSecretCapsuleLetter() {
+            openPinModal(() => {
+                const preview = document.getElementById('capsule-secret-preview');
+                if (preview) {
+                    preview.innerText = `"${vaultData.capsuleSecret}"`;
+                    preview.classList.remove('italic');
+                    preview.classList.add('font-semibold', 'text-rosewood');
+                }
+            });
+        }
+
+        function renderVouchers() {
+            const container = document.getElementById('vouchers-container');
+            if (!container) return;
+            container.innerHTML = vaultData.vouchers.map(v => `
+                <div class="p-5 rounded-3xl bg-white/90 border ${v.claimed ? 'border-babypink-400 bg-babypink-50/70' : 'border-babypink-200'} shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full ${v.claimed ? 'bg-babypink-500 text-white font-bold' : 'bg-babypink-100 text-rosewood'} mb-2">
+                            ${v.claimed ? '🎟️ Sudah Diklaim' : '🎁 Voucher LDR Aktif'}
+                        </span>
+                        <h4 class="font-serif font-bold text-base text-rosewood">${v.title}</h4>
+                        <p class="text-xs text-rosewood/70 mt-1 leading-relaxed">${v.desc}</p>
+                        ${v.claimed && v.claimInfo ? `
+                            <div class="mt-3 p-2.5 rounded-xl bg-white border border-babypink-200 text-[11px] text-rosewood">
+                                <strong>Request:</strong> "${v.claimInfo.request}"<br>
+                                <span class="text-[9px] font-mono opacity-60">${v.claimInfo.time}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <button type="button" onclick="claimVoucherModal('${v.id}')" class="mt-4 w-full py-2.5 px-4 rounded-xl bg-[#5865F2] hover:bg-rosewood text-white font-semibold text-xs shadow transition">
+                        ${v.claimed ? '👾 Klaim Ulang ke Grup Discord' : '👾 Klaim Voucher Ini ke Discord'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function claimVoucherModal(id) {
+            pendingVoucherClaimId = id;
+            const modal = document.getElementById('voucher-claim-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+        function closeVoucherModal() {
+            const modal = document.getElementById('voucher-claim-modal');
+            if (modal) modal.classList.add('hidden');
+            pendingVoucherClaimId = null;
+        }
+        function submitVoucherClaim() {
+            const reqInput = document.getElementById('voucher-request-input');
+            const reqText = (reqInput && reqInput.value.trim()) ? reqInput.value.trim() : 'Segera dieksekusi ya sayangku!';
+            const v = vaultData.vouchers.find(item => item.id === pendingVoucherClaimId);
+            if (v) {
+                v.claimed = true;
+                const nowStr = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+                v.claimInfo = { request: reqText, time: nowStr };
+                saveVaultData();
+                renderVouchers();
+                const discordMsg = `• **Voucher:** ${v.title}\n• **Diklaim oleh:** ${activeUserIdentity}\n• **Waktu Klaim:** ${nowStr}\n• **Request Khusus:** "${reqText}"\n\n_Segera eksekusi pesanan kesayanganmu sekarang juga!_ 💗`;
+                sendDiscordToGroup(discordMsg, { title: '🎟️ TIKET KLAIM VOUCHER LDR — ADHIT & INDUY' });
+            }
+            if (reqInput) reqInput.value = '';
+            closeVoucherModal();
+        }
+
+        function renderBuckets() {
+            const container = document.getElementById('bucket-list-container');
+            const progBar = document.getElementById('bucket-progress-bar');
+            const progText = document.getElementById('bucket-progress-text');
+            if (!container) return;
+
+            const filtered = vaultData.buckets.filter(b => {
+                if (activeBucketFilter === 'ldr') return b.cat === 'ldr';
+                if (activeBucketFilter === 'meet') return b.cat === 'meet';
+                return true;
+            });
+
+            const completedCount = vaultData.buckets.filter(b => b.done).length;
+            const totalCount = vaultData.buckets.length || 1;
+            const percentage = Math.round((completedCount / totalCount) * 100);
+
+            if (progBar) progBar.style.width = `${percentage}%`;
+            if (progText) progText.innerText = `${completedCount}/${totalCount} Tercapai (${percentage}%)`;
+
+            container.innerHTML = filtered.map(b => `
+                <div onclick="toggleBucket('${b.id}')" class="cursor-pointer p-3.5 rounded-2xl bg-white/90 border ${b.done ? 'border-babypink-400 bg-babypink-50/50' : 'border-babypink-200'} shadow-sm flex items-center justify-between gap-3 transition hover:shadow">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-lg ${b.done ? 'bg-babypink-500 text-white' : 'bg-babypink-100 text-rosewood/40'} flex items-center justify-center text-xs font-bold">
+                            ${b.done ? '✓' : ''}
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-rosewood ${b.done ? 'line-through opacity-65' : ''}">${b.title}</p>
+                            <span class="text-[9px] font-mono text-babypink-600">${b.cat === 'ldr' ? '🌐 Misi Virtual LDR' : '✈️ Saat Ketemu'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleBucket(id) {
+            const item = vaultData.buckets.find(b => b.id === id);
+            if (item) {
+                item.done = !item.done;
+                saveVaultData();
+                renderBuckets();
+                if (item.done) {
+                    const completedCount = vaultData.buckets.filter(b => b.done).length;
+                    const totalCount = vaultData.buckets.length || 1;
+                    const percentage = Math.round((completedCount / totalCount) * 100);
+                    sendDiscordToGroup(
+                        `✅ **Misi Tercapai:** "${item.title}"\n📊 **Progress Impian Kita:** ${completedCount}/${totalCount} (${percentage}%)`,
+                        { title: '🎉 Satu Impian Bucket List Tercapai!' }
+                    );
+                }
+            }
+        }
+
+        function setBucketFilter(filter, btnEl) {
+            activeBucketFilter = filter;
+            document.querySelectorAll('.bucket-tab-btn').forEach(btn => {
+                btn.className = 'bucket-tab-btn px-4 py-1.5 rounded-full bg-white text-rosewood text-xs font-semibold transition';
+            });
+            if (btnEl) btnEl.className = 'bucket-tab-btn px-4 py-1.5 rounded-full bg-babypink-500 text-white text-xs font-semibold transition';
+            renderBuckets();
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notes-grid');
+            if (!container) return;
+            container.innerHTML = vaultData.notes.map(note => {
+                let bgNote = 'bg-[#FFF3CD] border-[#FFEEBA] text-[#856404]';
+                if (note.color === 'pink') bgNote = 'bg-[#FADADD] border-[#F5C6CB] text-[#3A262A]';
+                if (note.color === 'blue') bgNote = 'bg-[#D1ECF1] border-[#BEE5EB] text-[#0C5460]';
+                return `
+                    <div class="p-5 rounded-2xl border ${bgNote} shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-widest">${note.sender}</span>
+                                <span class="text-[9px] font-mono opacity-60">${note.date}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-medium leading-relaxed">${note.text}</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-current/10 flex items-center justify-between">
+                            <span class="text-[10px] font-mono opacity-65">📌 Memo Cinta</span>
+                            <button type="button" onclick="deleteNote('${note.id}')" class="text-[10px] hover:underline opacity-75">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteNote(id) {
+            openPinModal(() => {
+                vaultData.notes = vaultData.notes.filter(n => n.id !== id);
+                saveVaultData();
+                renderNotes();
+                showToast('Memo Dihapus', 'Catatan telah dihapus dari papan.', '🗑️');
+            });
+        }
+
+        // --- 10. SCRATCH CARD ENGINE ---
+        const scratchCardQuotes = [
+            { title: "Virtual Dinner Romantis 🍝", desc: "Pesan menu makanan yang sama lewat GoFood, lalu buka video call dan makan bareng!", dresscode: "Pakai baju warna cerah kesayangan!" },
+            { title: "Mabar Roblox / Co-op 2 Jam 🎮", desc: "Login game berdua, selesaikan misi bareng sambil ketawa-ketawa di voice call.", dresscode: "Siapkan headset & cemilan!" },
+            { title: "Deep Talk 36 Questions 💬", desc: "Saling jawab pertanyaan intim tentang kenangan dan rencana masa depan kita.", dresscode: "Suasana kamar lampu temaram!" },
+            { title: "Watch Party Film Romantis 🍿", desc: "Nonton film bareng via Share Screen, siapkan minuman manis masing-masing.", dresscode: "Bantal paling nyaman!" }
+        ];
+
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const q = scratchCardQuotes[Math.floor(Math.random() * scratchCardQuotes.length)];
+
+            const titleEl = document.getElementById('scratch-title');
+            const descEl = document.getElementById('scratch-desc');
+            const dressEl = document.getElementById('scratch-dresscode');
+            if (titleEl) titleEl.innerText = q.title;
+            if (descEl) descEl.innerText = q.desc;
+            if (dressEl) dressEl.innerText = `🎧 ${q.dresscode}`;
+
+            canvas.width = canvas.offsetWidth || 320;
+            canvas.height = canvas.offsetHeight || 180;
+
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = '#E8B4BC';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#3A262A';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ GOSOK DI SINI UNTUK IDE DATE ✨', canvas.width / 2, canvas.height / 2 + 4);
+
+            let isDrawing = false;
+            function scratch(e) {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                if (!clientX || !clientY) return;
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 24, 0, Math.PI * 2, false);
+                ctx.fill();
+            }
+
+            canvas.onmousedown = () => isDrawing = true;
+            window.addEventListener('mouseup', () => isDrawing = false);
+            canvas.onmousemove = scratch;
+            canvas.ontouchstart = () => isDrawing = true;
+            canvas.ontouchend = () => isDrawing = false;
+            canvas.ontouchmove = scratch;
+        }
+
+        function sendScratchDateToWa() {
+            const titleEl = document.getElementById('scratch-title');
+            const descEl = document.getElementById('scratch-desc');
+            const title = titleEl ? titleEl.innerText : 'Virtual Date';
+            const desc = descEl ? descEl.innerText : '';
+            sendDiscordToGroup(`• **Agenda Date:** ${title}\n• **Detail Aktivitas:** ${desc}\n\n_Siap-siap di Voice/Video Discord nanti malam yaa sayangku!_ 💗`, {
+                title: '💌 Undangan Kartu Gosok Virtual Date!'
+            });
+        }
+
+        // --- 11. LDR HUB & TIMERS ---
+        function updateLdrHub() {
+            const countEl = document.getElementById('hug-count-number');
+            const logEl = document.getElementById('last-hug-log');
+            const adhitSt = document.getElementById('adhit-status-text');
+            const induySt = document.getElementById('induy-status-text');
+            const meetupLbl = document.getElementById('meetup-date-label');
+            if (countEl) countEl.innerText = vaultData.hugsCount;
+            if (logEl) logEl.innerText = vaultData.lastHugText;
+            if (adhitSt) adhitSt.innerText = vaultData.adhitStatus;
+            if (induySt) induySt.innerText = vaultData.induyStatus;
+            if (meetupLbl) meetupLbl.innerText = formatIndonesianDate(vaultData.meetupDateISO || '2026-11-15');
+        }
+
+        function refreshAllViews() {
+            renderSlideshow();
+            renderPhotobox();
+            renderTimeline();
+            renderNotes();
+            renderBuckets();
+            renderVouchers();
+            updateLdrHub();
+        }
+
+        function initTimers() {
+            const startDate = new Date('2025-11-05T00:00:00');
+            const annivDate = new Date('2026-11-05T00:00:00');
+
+            function updateClocks() {
+                const now = new Date();
+                const targetIso = vaultData.meetupDateISO || '2026-11-15';
+                const meetupDate = new Date(`${targetIso}T00:00:00`);
+
+                const diffTime = Math.max(0, now - startDate);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
+                const diffMins = Math.floor((diffTime / 1000 / 60) % 60);
+                const diffSecs = Math.floor((diffTime / 1000) % 60);
+
+                const counterEl = document.getElementById('relation-counter-display');
+                if (counterEl) {
+                    counterEl.innerText = `${diffDays} Hari • ${diffHours} Jam • ${diffMins} Menit • ${diffSecs} Detik`;
+                }
+
+                const meetDays = Math.ceil((meetupDate - now) / (1000 * 60 * 60 * 24));
+                const meetPill = document.getElementById('meetup-countdown-pill');
+                if (meetPill) {
+                    meetPill.innerText = meetDays > 0 ? `✈️ ${meetDays} Hari Menuju Ketemu!` : (meetDays === 0 ? `✈️ Hari Ini Kita Ketemu!` : `✈️ Momen Pertemuan Telah Tiba!`);
+                }
+
+                const annivDays = Math.ceil((annivDate - now) / (1000 * 60 * 60 * 24));
+                const capsulePill = document.getElementById('anniversary-countdown');
+                if (capsulePill) {
+                    capsulePill.innerText = annivDays > 0 ? `⏳ ${annivDays} Hari Menuju 1st Anniversary` : `🎉 Happy 1st Anniversary!`;
+                }
+            }
+            updateClocks();
+            setInterval(updateClocks, 1000);
+        }
+
+        function setupInteractions() {
+            const hugBtn = document.getElementById('send-virtual-hug-btn');
+            if (hugBtn) {
+                hugBtn.onclick = () => {
+                    vaultData.hugsCount += 1;
+                    vaultData.lastHugText = `Pelukan terakhir dari ${activeUserIdentity} pukul ${new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}`;
+                    saveVaultData();
+                    updateLdrHub();
+                    showToast('Peluk Virtual Terkirim!', `${activeUserIdentity} mengirimkan pelukan hangat! Total: ${vaultData.hugsCount} pelukan 🫂`, '🫂');
+                    sendDiscordToGroup(`**${activeUserIdentity}** baru saja menekan tombol Peluk Virtual!\n💞 **Total Pelukan Kita:** ${vaultData.hugsCount} Pelukan`, {
+                        title: `🫂 Peluk Virtual Hangat dari ${activeUserIdentity}`
+                    });
+                };
+            }
+
+            const waHugBtn = document.getElementById('send-wa-hug-btn');
+            if (waHugBtn) {
+                waHugBtn.onclick = () => {
+                    vaultData.hugsCount += 1;
+                    saveVaultData();
+                    updateLdrHub();
+                    sendDiscordToGroup(`Aku baru aja kirim pelukan virtual ke-💞**${vaultData.hugsCount}** di website kita. Kangen banget sama kamu sayang! 💗`, {
+                        title: `🫂 Peluk & Rindu Virtual dari ${activeUserIdentity}!`
+                    });
+                };
+            }
+
+            // Photo Upload Handler (Supports Local File Reader & URL)
+            const photoForm = document.getElementById('photo-upload-form');
+            if (photoForm) {
+                photoForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const fileInput = document.getElementById('new-photo-file');
+                    const urlInput = document.getElementById('new-photo-url');
+                    const capInput = document.getElementById('new-photo-caption');
+                    const povInput = document.getElementById('new-photo-pov');
+
+                    const caption = capInput ? capInput.value.trim() : 'Momen Manis Kita';
+                    const pov = povInput ? povInput.value : '💑 Momen Bersama';
+
+                    function finalizePhotoAdd(finalUrl) {
+                        const newPhoto = {
+                            id: 'p' + Date.now(),
+                            url: finalUrl,
+                            caption: caption,
+                            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+                            pov: pov
+                        };
+                        vaultData.photos.unshift(newPhoto);
+                        selectedPhotoboxPhotoIds.pop();
+                        selectedPhotoboxPhotoIds.unshift(newPhoto.id);
+                        saveVaultData();
+                        refreshAllViews();
+                        if (fileInput) fileInput.value = '';
+                        if (urlInput) urlInput.value = '';
+                        if (capInput) capInput.value = '';
+                        showToast('Foto Masuk ke Website!', 'Otomatis ditambahkan ke Slideshow & dikirim ke Discord.', '📸');
+                        sendDiscordToGroup(`• **Label POV:** ${pov}\n• **Caption:** "${caption}"\n\n_Foto sudah otomatis tampil di Slideshow & Photobox website kita!_ 💗`, {
+                            title: `📸 PAP / Foto Baru Diupload oleh ${activeUserIdentity}!`,
+                            imageUrl: finalUrl
+                        });
+                    }
+
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => finalizePhotoAdd(ev.target.result);
+                        reader.readAsDataURL(fileInput.files[0]);
+                    } else if (urlInput && urlInput.value.trim()) {
+                        finalizePhotoAdd(urlInput.value.trim());
+                    } else {
+                        showToast('Pilih Foto Dulu', 'Silakan pilih file foto dari perangkatmu atau tempel URL gambar.', '⚠️');
+                    }
+                };
+            }
+
+            // Timeline Add Form
+            const tlForm = document.getElementById('timeline-add-form');
+            if (tlForm) {
+                tlForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const tTitle = document.getElementById('tl-title-input');
+                    const tDate = document.getElementById('tl-date-input');
+                    const tText = document.getElementById('tl-text-input');
+                    if (tTitle && tText) {
+                        const newStory = {
+                            id: 't' + Date.now(),
+                            title: tTitle.value.trim(),
+                            date: tDate ? tDate.value.trim() : 'Momen Spesial',
+                            text: tText.value.trim(),
+                            sender: activeUserIdentity
+                        };
+                        vaultData.timeline.push(newStory);
+                        saveVaultData();
+                        renderTimeline();
+                        tTitle.value = '';
+                        if (tDate) tDate.value = '';
+                        tText.value = '';
+                        tlForm.classList.add('hidden');
+                        sendDiscordToGroup(`• **Judul Momen:** ${newStory.title} (${newStory.date})\n• **Cerita:** "${newStory.text}"`, {
+                            title: `📖 Babak Cerita Baru Ditulis oleh ${activeUserIdentity}`
+                        });
+                    }
+                };
+            }
+
+            // Bucket List Add Form
+            const bucketForm = document.getElementById('bucket-add-form');
+            if (bucketForm) {
+                bucketForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const bTitle = document.getElementById('new-bucket-title');
+                    const bCat = document.getElementById('new-bucket-cat');
+                    if (bTitle && bTitle.value.trim()) {
+                        const catVal = bCat ? bCat.value : 'ldr';
+                        const titleVal = bTitle.value.trim();
+                        vaultData.buckets.unshift({
+                            id: 'b' + Date.now(),
+                            title: titleVal,
+                            cat: catVal,
+                            done: false
+                        });
+                        saveVaultData();
+                        renderBuckets();
+                        bTitle.value = '';
+                        showToast('Misi Ditambahkan!', 'Target baru masuk ke Bucket List & dikirim ke Discord.', '✨');
+                        sendDiscordToGroup(`• **Target Baru:** "${titleVal}"\n• **Kategori:** ${catVal === 'ldr' ? '🌐 Misi Virtual LDR' : '✈️ Saat Ketemu Nanti'}`, {
+                            title: `✨ Target Bucket List Baru dari ${activeUserIdentity}`
+                        });
+                    }
+                };
+            }
+
+            // Sticky Note Upload Form
+            const noteForm = document.getElementById('note-upload-form');
+            if (noteForm) {
+                noteForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const textInput = document.getElementById('new-note-text');
+                    const colorInput = document.getElementById('new-note-color');
+                    if (textInput && textInput.value.trim()) {
+                        const newNote = {
+                            id: 'n' + Date.now(),
+                            sender: activeUserIdentity,
+                            text: textInput.value.trim(),
+                            color: colorInput ? colorInput.value : 'pink',
+                            date: 'Baru saja'
+                        };
+                        vaultData.notes.unshift(newNote);
+                        saveVaultData();
+                        renderNotes();
+                        textInput.value = '';
+                        sendDiscordToGroup(`"${newNote.text}"\n\n_Ditempel di Papan Memo Cinta Website Kita_ 💗`, {
+                            title: `📌 Memo Cinta Baru dari ${activeUserIdentity}`
+                        });
+                    }
+                };
+            }
+        }
+
+        function initPetals() {
+            const container = document.getElementById('petals-container');
+            if (!container) return;
+            const symbols = ['🌸', '💗', '✨', '🌷'];
+            for (let i = 0; i < 12; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal text-sm select-none';
+                petal.innerText = symbols[i % symbols.length];
+                petal.style.left = `${Math.random() * 100}vw`;
+                petal.style.bottom = `-30px`;
+                petal.style.animationDuration = `${14 + Math.random() * 10}s`;
+                petal.style.animationDelay = `${Math.random() * 7}s`;
+                container.appendChild(petal);
+            }
+        }
+
+        function bootVaultApp() {
+            loadVaultData();
+            initPinGate();
+            setupInteractions();
+            initTimers();
+            initSlideshowLoop();
+            refreshAllViews();
+            initScratchCard();
+            initPetals();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootVaultApp);
+        } else {
+            bootVaultApp();
+        }
+    </script>
+</body>
+</html>
